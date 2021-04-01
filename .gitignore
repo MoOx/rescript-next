@@ -1,0 +1,14 @@
+*.log
+
+# macOS crap
+.DS_Store
+
+# node
+node_modules
+
+# ReScript artifacts
+*.bs.js
+.bsb.lock
+**/lib/bs
+**/lib/ocaml
+**/.merlin
