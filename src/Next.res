@@ -21,6 +21,41 @@ module Head = {
   external make: (~children: React.element) => React.element = "default"
 }
 
+// https://nextjs.org/docs/api-reference/next/image
+module Image = {
+  type loaderOptions = {
+    src: string,
+    width: float,
+    quality: float,
+  }
+  @module("next/image") @react.component
+  external make: (
+    ~alt: string=?,
+    ~className: string=?,
+    ~height: float=?,
+    ~layout: [#fixed | #intrinsic | #responsive | #fill]=?,
+    ~loader: loaderOptions => string=?,
+    ~loading: [
+      | #"lazy"
+      | #eager
+    ]=?,
+    ~priority: bool=?,
+    ~objectFit: [
+      | #fill
+      | #contain
+      | #cover
+      | #none
+      | #"scale-down"
+    ]=?,
+    ~objectPosition: string=?,
+    ~quality: float=?,
+    ~sizes: string=?,
+    ~src: string,
+    ~unoptimized: bool=?,
+    ~width: float=?,
+  ) => React.element = "default"
+}
+
 module Link = {
   @module("next/link") @react.component
   external make: (
