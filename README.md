@@ -46,6 +46,16 @@ yarn add rescript-next
 }
 ```
 
+## Supported modules and features
+
+- `next/dynamic`
+- `next/error`
+- `next/head`
+- `next/image`
+- `next/link`
+- `next/router` (`on`, `off`, `push`, `replace`)
+- `getStaticProps` and `getServerSideProps`
+
 ## Usage
 
 Check out the [source file](./src/Next.res) to discover the API.
