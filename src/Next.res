@@ -31,6 +31,8 @@ module Image = {
   @module("next/image") @react.component
   external make: (
     ~alt: string=?,
+    ~blurDataURL: string=?,
+    ~placeholder: [#blur | #empty]=?,
     ~className: string=?,
     ~height: float=?,
     ~layout: [#fixed | #intrinsic | #responsive | #fill]=?,
@@ -73,14 +75,19 @@ module Link = {
 module Router = {
   type routerEvent
 
+  type routerEventOptions = {shallow: bool}
+
   @send
   external on: (
     routerEvent,
     @string
     [
-      | #routeChangeStart(string => unit)
-      | #routeChangeComplete(string => unit)
-      | #hashChangeComplete(string => unit)
+      | #routeChangeStart((string, routerEventOptions) => unit)
+      | #routeChangeComplete((string, routerEventOptions) => unit)
+      | #routeChangeError((string, routerEventOptions) => unit)
+      | #beforeHistoryChange((string, routerEventOptions) => unit)
+      | #hashChangeStart((string, routerEventOptions) => unit)
+      | #hashChangeComplete((string, routerEventOptions) => unit)
     ],
   ) => unit = "on"
 
@@ -89,18 +96,28 @@ module Router = {
     routerEvent,
     @string
     [
-      | #routeChangeStart(string => unit)
-      | #routeChangeComplete(string => unit)
-      | #hashChangeComplete(string => unit)
+      | #routeChangeStart((string, routerEventOptions) => unit)
+      | #routeChangeComplete((string, routerEventOptions) => unit)
+      | #routeChangeError((string, routerEventOptions) => unit)
+      | #beforeHistoryChange((string, routerEventOptions) => unit)
+      | #hashChangeStart((string, routerEventOptions) => unit)
+      | #hashChangeComplete((string, routerEventOptions) => unit)
     ],
   ) => unit = "off"
 
   type router = {
-    route: string,
-    asPath: string,
-    events: routerEvent,
     pathname: string,
     query: Js.Dict.t<string>,
+    asPath: string,
+    isFallback: bool,
+    basePath: string,
+    locale: string,
+    locales: array<string>,
+    defaultLocale: string,
+    // domainLocales: Array<{domain, defaultLocale, locales}>, // @todo
+    isReady: bool,
+    isPreview: bool,
+    events: routerEvent,
   }
 
   type path = {
@@ -108,11 +125,27 @@ module Router = {
     query: Js.Dict.t<string>,
   }
 
+  type options = {
+    scroll: bool,
+    shallow: bool,
+    locale: string,
+  }
+
   @send external push: (router, string) => unit = "push"
+  @send external pushWithOptions: (router, string, options) => unit = "push"
   @send external pushObj: (router, path) => unit = "push"
+  @send external pushObjWithOptions: (router, path, options) => unit = "push"
 
   @send external replace: (router, string) => unit = "replace"
+  @send external replaceWithOptions: (router, string, options) => unit = "replace"
   @send external replaceObj: (router, path) => unit = "replace"
+  @send external replaceObjWithOptions: (router, path, options) => unit = "replace"
+
+  @send external prefetch: (router, string) => unit = "prefetch"
+  @send
+  external beforePopState: (router, (string, string, options) => unit) => unit = "beforePopState"
+  @send external back: router => unit = "back"
+  @send external reload: router => unit = "reload"
 
   @module("next/router") external useRouter: unit => router = "useRouter"
 }
@@ -164,4 +197,13 @@ module Page = {
       "revalidate": int,
     }>
   }
+}
+
+module Script = {
+  @module("next/script") @react.component
+  external make: (
+    ~src: string,
+    ~strategy: [#beforeInteractive | #afterInteractive | #lazyOnload | #worker],
+    ~onLoad: unit => unit=?,
+  ) => React.element = "default"
 }

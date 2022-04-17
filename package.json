@@ -1,13 +1,13 @@
 {
   "name": "rescript-next",
   "description": "ReScript bindings for Next.js",
-  "version": "10.0.0-alpha.1",
+  "version": "12.0.0",
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "@rescript/react": "^0.10.0",
-    "next": "^10.0.0"
+    "@rescript/react": ">=0.10.3",
+    "next": ">=12.0.0"
   },
   "repository": "https://github.com/MoOx/rescript-next",
   "funding": "https://github.com/MoOx/rescript-next?sponsor=1",
@@ -26,18 +26,18 @@
     "!src/**/*.bs.js"
   ],
   "scripts": {
-    "res:start": "bsb -make-world -w",
-    "res:build": "bsb -make-world",
-    "res:clean-build": "bsb -clean-world -make-world",
-    "start": "yarn res:start",
-    "build": "yarn res:build",
-    "test": "yarn res:clean-build",
+    "re:start": "rescript build -w",
+    "re:build": "rescript",
+    "re:clean-build": "rescript clean && rescript",
+    "start": "npm run re:start",
+    "build": "npm run re:build",
+    "test": "npm run re:clean-build",
     "release": "npmpub"
   },
   "devDependencies": {
-    "@rescript/react": "^0.10.0",
-    "bs-platform": "^9.0.0",
+    "@rescript/react": "^0.10.3",
     "npmpub": "^5.0.0",
-    "prettier": "^2.0.0"
+    "prettier": "^2.0.0",
+    "rescript": "^9.1.4"
   }
 }
