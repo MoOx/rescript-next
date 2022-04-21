@@ -161,14 +161,24 @@ module Page = {
       @send external end_: res => unit = "end"
     }
 
-    type context<'props, 'params> = {
+    type context<'props, 'params, 'previewData> = {
       params: Js.t<'params>,
-      query: Js.Dict.t<string>,
       req: req,
       res: res,
+      query: Js.Dict.t<string>,
+      preview: bool,
+      previewData: 'previewData,
+      resolvedUrl: string,
+      locale: string,
+      locales: array<string>,
+      defaultLocale: string,
     }
 
-    type serverSideProps<'props, 'params> = context<'props, 'params> => Js.Promise.t<{
+    type serverSideProps<'props, 'params, 'previewData> = context<
+      'props,
+      'params,
+      'previewData,
+    > => Js.Promise.t<{
       "props": 'props,
     }>
   }
@@ -184,15 +194,25 @@ module Page = {
     type t<'params> = unit => Js.Promise.t<return<'params>>
   }
   module GetStaticProps = {
-    type context<'props, 'params> = {
+    type context<'props, 'params, 'previewData> = {
       params: 'params,
+      preview: bool,
+      previewData: 'previewData,
+      locale: string,
+      locales: array<string>,
+      defaultLocale: string,
       query: Js.Dict.t<string>,
-      req: Js.Nullable.t<Js.t<'props>>,
     }
 
-    type t<'props, 'params> = context<'props, 'params> => Js.Promise.t<{"props": 'props}>
+    type t<'props, 'params, 'previewData> = context<'props, 'params, 'previewData> => Js.Promise.t<{
+      "props": 'props,
+    }>
 
-    type revalidate<'props, 'params> = context<'props, 'params> => Js.Promise.t<{
+    type revalidate<'props, 'params, 'previewData> = context<
+      'props,
+      'params,
+      'previewData,
+    > => Js.Promise.t<{
       "props": 'props,
       "revalidate": int,
     }>
