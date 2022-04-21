@@ -1,5 +1,9 @@
 # Changelog of `rescript-next`
 
+## 12.0.1 - 2022-04-21
+
+- Enhance { GetServerSideProps | GetStaticProps }.context type
+
 ## 12.0.0 - 2022-04-17
 
 Add APIs & props to match Next.js 12. Some stuff may still be missing.
