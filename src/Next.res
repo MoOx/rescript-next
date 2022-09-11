@@ -105,6 +105,19 @@ module Router = {
     ],
   ) => unit = "off"
 
+  @send
+  external emit: (
+    routerEvent,
+    [
+      | #routeChangeStart
+      | #routeChangeComplete
+      | #routeChangeError
+      | #beforeHistoryChange
+      | #hashChangeStart
+      | #hashChangeComplete
+    ],
+  ) => unit = "emit"
+
   type router = {
     pathname: string,
     query: Js.Dict.t<string>,
